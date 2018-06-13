@@ -8,7 +8,7 @@
 #---------------------------------------------------#
 
 """
-Version: 9/6/18
+Version: 10/6/18
 
 Python program for fetching on Yahoo server and displaying weather forecast on an Inky screen connected to a Raspberry Pi Zero
 
