@@ -8,12 +8,15 @@
 #---------------------------------------------------#
 
 """
-Version: 3/6/18
+Version: 9/6/18
 
 Python program for fetching on Yahoo server and displaying weather forecast on an Inky screen connected to a Raspberry Pi Zero
 
 HISTORY:
 --------
+
+9/6/18:
+- Corrected a bug with PM/AM for Noon and Midnight
 
 3/6/18:
 - Added "rotate" value to force screen rotation
@@ -205,7 +208,10 @@ def display_forecast(CITY, COUNTRYCODE):
 			tuple_date = email.utils.parsedate(current_datetime)
 			current_H = time.strftime("%H", tuple_date)
 			current_M = time.strftime("%M", tuple_date)
-			if 'PM' in str(current_datetime):
+			if current_H == '12':
+				if not ('PM' in str(current_datetime)):
+					current_H = '00'
+			elif 'PM' in str(current_datetime):
 				current_H = str(int(current_H)+12)
 			datetime = "%s:%s" %(current_H, current_M)			
 			current_code = int(results["item"]["condition"]["code"])
