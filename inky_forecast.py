@@ -8,12 +8,14 @@
 #---------------------------------------------------#
 
 """
-Version: 10/6/18
+Version: 25/6/18
 
 Python program for fetching on Yahoo server and displaying weather forecast on an Inky screen connected to a Raspberry Pi Zero
 
 HISTORY:
 --------
+25/6/18:
+- Added a new icon to illustrate weather forecast of type "fair night"
 
 9/6/18:
 - Corrected a bug with PM/AM for Noon and Midnight
@@ -23,7 +25,7 @@ HISTORY:
 - Added test for countrycode to display names in French if country is France
 
 2/6/18:
-- Initial program, derivated from a previous work, and an weather.py program distributed along with Inky screen as an example (source: https://github.com/pimoroni/inky-phat/blob/master/examples/weather.py)
+- Initial program, derivated from a previous work, and a weather.py program distributed along with Inky screen as an example (source: https://github.com/pimoroni/inky-phat/blob/master/examples/weather.py)
 
 
 USAGE:
@@ -91,12 +93,13 @@ nb_forecast = 4
 
 icon_map = {
 	"snow": [5, 6, 7, 8, 10, 13, 14, 15, 16, 17, 18, 41, 42, 43, 46],
-	"rain": [9, 11, 12],
+	"rain": [9, 11, 12, 35, 40],
 	"cloud": [19, 20, 21, 22, 25, 26, 27, 28],
 	"part_cloud": [29, 30, 44],
 	"sun": [32, 33, 34, 36],
 	"storm": [0, 1, 2, 3, 4, 37, 38, 39, 45, 47],
-	"wind": [23, 24]
+	"wind": [23, 24],
+	"clear_nite": [31]
 }
 
 weekdays = {
