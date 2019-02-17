@@ -9,26 +9,45 @@ Repository for inky_forecast project, including python programs for fetching wea
 USAGE:
 -----
 From the shell: 
+
 ``python inky_weather_tide.py [-city city [countrycode]] [-h] [-v] [-tidename Name] [-weathername Name] [-tide] [-p]```
+
 with:
+
 	`-h`: Display help info
+
 	`-v: Verbose mode
+
 	`-p`: Print only mode (no display on Inky)
+
 	`-info`: Display screen with IP info before weather
+
 	`-tide`: Display daily tide info in place of current weather
+
 	`-tidename`: Name to be used when fetching tide info (if different from city)
+
 	`-weathername`: Name to be used when fetching weather info (if different from city)
+
 	`-city city [countrycode]`: Name (and countrycode) to be used for title, tide and weather, unless stated otherwise for weather or tide (defaut is `CITY_DEFAULT, COUNTRY_DEFAULT`)
 
 From another python program: 
+
 ```inky_weather_tide.inky_weather_tide(city, country, info_display=False, tide_display=False, rotate=True, tidename='', weathername='')```
+
 Where:
+
 	- `city` : name of the city where forcast shall be displayed (default is either local weather, as determined by IP, or `CITY_DEFAULT`)
+
 	- `country` : code of the country (default is `COUNTRY_DEFAULT`)
+
 	- `info_display` : display IP info before the weather info
+
 	- `tide_display` : display tide and forecast info instead of current weather and forecat info
+
 	- `rotate` : rotate 180° the display
+
 	- `tidename`: Name to be used when fetching tide info (if different from city)
+
 	- `weathername`: Name to be used when fetching weather info (if different from city)
 
 
