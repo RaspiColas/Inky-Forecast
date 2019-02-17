@@ -85,7 +85,7 @@ nb_forecast = 4
 nb_iter = 3  # Nb d'itérations max pour essayer d'afficher les info
 delay = 30  # Delai entre deux itérations
 
-OPENWEATHER_ID = "eecd49128f069b2f2b14ddf743e8f09a"
+OPENWEATHER_ID = "put your id here"
 OPENWEATHER_FOR = "http://api.openweathermap.org/data/2.5/forecast?q=%s&units=metric&appid=%s"
 OPENWEATHER_WEA = "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=%s"
 TIDE_URL = "http://www.horaire-maree.fr/maree/%s/"
