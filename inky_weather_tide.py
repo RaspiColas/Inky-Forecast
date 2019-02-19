@@ -4,6 +4,7 @@
 #---------------------------------------------------#
 #													#
 #				inky_weather_tide.py				#
+#				by N.Mercouroff						#
 #													#
 #---------------------------------------------------#
 
@@ -47,23 +48,26 @@ HISTORY:
 USAGE:
 -----
 From the shell: 
-python inky_weather.py [-city city [countrycode]] [-h] [-v] [-tidename Name] [-weathername Name] [-tide] [-p] with:
+python inky_weather_tide.py [-city city [countrycode]] [-h] [-v] [-tidename Name] [-weathername Name] [-tide] [-p] with:
 	-h: Display help info
 	-v: Verbose mode
 	-p: Print only mode (no display on Inky)
 	-info: Display screen with IP info before weather
 	-tide: Display daily tide info in place of current weather
-	-tidename: Name to be used when fetching tide info
-	-weathername: Name to be used when fetching weather info
+	-tidename: Name to be used when fetching tide info (if different from city)
+	-weathername: Name to be used when fetching weather info (if different from city)
 	-city city [countrycode]: Name (and countrycode) to be used for title, tide and weather, unless stated otherwise for weather or tide (defaut is CITY_DEFAULT, COUNTRY_DEFAULT)
 
 From another python program: 
-inky_weather.inky_weather(city, country, info_display=False, tide_display=False, rotate=True, tidename='', weathername='')
-
+inky_weather_tide.inky_weather_tide(city, country, info_display=False, tide_display=False, rotate=True, tidename='', weathername='')
 Where:
-- city : name of the city where forcast shall be displayed (default is either local weather, as determined by IP, or CITY_DEFAULT)
-- country : code of the country (default is 'FR' for France)
-- info_display : 
+	- city : name of the city where forcast shall be displayed (default is either local weather, as determined by IP, or CITY_DEFAULT)
+	- country : code of the country (default is COUNTRY_DEFAULT)
+	- info_display : display IP info before the weather info
+	- tide_display : display tide and forecast info instead of current weather and forecat info
+	- rotate : rotate 180° the display
+	- tidename: Name to be used when fetching tide info (if different from city)
+	- weathername: Name to be used when fetching weather info (if different from city)
 
 
 PREREQUISITS:
@@ -122,9 +126,9 @@ import inky_IP, weather_tide
 #--- DEFINITIONS ---------------------------------
 #-------------------------------------------------
 
-nb_forecast = 4
-nb_iter = 3  # Nb d'itérations max pour essayer d'afficher les info
-delay = 30  # Delai entre deux itérations
+nb_forecast = 4	# Nb of days of forecast
+nb_iter = 3  # Max nb of iteration of info fetching attempts
+delay = 30  # Delai between two retries
 
 PATH_FILENAME = "/home/pi/InkyWeather/"
 LOG_FILENAME = "log_weather.log"
@@ -393,13 +397,13 @@ def display_forecast(forecast_data):
 
 		# Draw the current weather icon over the backdrop
 		if icon_current is not None:
-			inkyphat.paste(icons[icon_current], (52 + i*38, 44), masks[icon_current])
+			inkyphat.paste(icons[icon_current], (52 + day*38, 44), masks[icon_current])
 		else:
-			inkyphat.text((56 + i*38, 54), "?", inkyphat.RED, font=font20)
+			inkyphat.text((56 + day*38, 54), "?", inkyphat.RED, font=font20)
 
-		inkyphat.text((64 + i*38, 84),
+		inkyphat.text((64 + day*38, 84),
 		              u"{:.0f}°".format(daily_forecast['temp']), inkyphat.RED, font=font18)
-		inkyphat.text((64 + i*38, 32),
+		inkyphat.text((64 + day*38, 32),
 		              daily_forecast['nameday'], inkyphat.BLACK, font=font18)
 
 	return True
@@ -436,7 +440,7 @@ def display_tide(tide_hours, tide_coef, country):
 #		Main function for shell command
 #-------------------------------------------------
 
-def inky_weather(city, country, info_display=False, tide_display=False, rotate=True, tide_city='', weather_city=''):
+def inky_weather_tide(city, country, info_display=False, tide_display=False, rotate=True, tide_city='', weather_city=''):
 
 	init_display(rotate)
 
@@ -476,7 +480,7 @@ def inky_weather(city, country, info_display=False, tide_display=False, rotate=T
 
 	tolog("Fetching weather info for %s (%s)" % (weather_city, country))
 	for i in range(nb_iter):
-		weather_data=weather_tide.get_weather(weather_city, country)
+		weather_data = weather_tide.get_weather(weather_city, country)
 		if weather_data != {}:
 			break
 		sleep(delay)
@@ -542,7 +546,7 @@ if __name__ == "__main__":
 		city = CITY_DEFAULT
 		country = COUNTRY_DEFAULT
 
-	ok = inky_weather(city, country, info_display, tide_display, rotate, tidename, weathername)
+	ok = inky_weather_tide(city, country, info_display, tide_display, rotate, tidename, weathername)
 
 	if ok:
 		tolog("Weather info for %s in %s displayed ; enjoy !" % (city, country))

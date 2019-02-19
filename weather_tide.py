@@ -4,16 +4,20 @@
 #---------------------------------------------------#
 #													#
 #				weather_tide.py						#
+#				by N.Mercouroff						#
 #													#
 #---------------------------------------------------#
 
 """
-Version: 16/2/19
+Version: 18/2/19
 
 Python program for fetching weather info on openweather web server and tide info on horaire-maree web server
 
 HISTORY:
 --------
+18/2/19:
+- Added -tide option to shell command to force display of tide information
+
 16/2/19:
 - Initial program, derivated from inky_weather.py program
 
@@ -47,8 +51,10 @@ get_forecast(city, country, utc): returns forecast for city, country from utc, w
 }
 get_tide(city): returns tide_hours, tide_coef info for the city, where tide_hours is an array of 1 or 2 hightide hours for the day, and tide_coef is the tide coef
 
+
 PREREQUISITS:
 ------------
+
 
 SIDE EFFECTS:
 ------------
@@ -82,10 +88,10 @@ from urllib2 import Request, urlopen, URLError
 #-------------------------------------------------
 
 nb_forecast = 4
-nb_iter = 3  # Nb d'itérations max pour essayer d'afficher les info
-delay = 30  # Delai entre deux itérations
+nb_iter = 3  # Max nb of iteration of info fetching attempts
+delay = 30  # Delai between two retries
 
-OPENWEATHER_ID = "put your id here"
+OPENWEATHER_ID = "put-your-own-code"
 OPENWEATHER_FOR = "http://api.openweathermap.org/data/2.5/forecast?q=%s&units=metric&appid=%s"
 OPENWEATHER_WEA = "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=%s"
 TIDE_URL = "http://www.horaire-maree.fr/maree/%s/"
@@ -97,6 +103,7 @@ HELP = "python weather_tide.py [-h][-v][-city city[countrycode]][-tidename Name]
 with:\n\
 	-h: Display help info\n\
 	-v: Verbose mode\n\
+	-tide: Display tide info\
 	-tidename: Name to be used when fetching tide info\n\
 	-weathername: Name to be used when fetching weather info\n\
 	-city city [countrycode]: Name (and countrycode) to be used for tide and weather, unless stated otherwise for weather or tide (defaut is CITY_DEFAULT, COUNTRY_DEFAULT)"
@@ -164,6 +171,7 @@ weekdays_FR = {
 }
 
 verbose = False
+tide_display = False
 
 CITY_DEFAULT = "Paris"
 COUNTRY_DEFAULT = "Fr"
@@ -193,7 +201,7 @@ def decode_arg(argv):
 	"""
 		Decoding of the shell arguments
 	"""
-	global verbose
+	global verbose, tide_display
 
 	tolog("Decoding arguments...")
 	city = ''
@@ -208,6 +216,9 @@ def decode_arg(argv):
 		if arg == '-v':  # Verbose
 			verbose = True
 			tolog("Verbose mode")
+		if arg == '-tide':  # Display tide info
+			tide_display = True
+			tolog("Tide display mode")
 		elif arg == '-h':  # Display help
 			tolog("Help requested")
 			print(HELP)
@@ -523,35 +534,37 @@ if __name__ == "__main__":
 			sleep(delay)
 	
 	if city == "":
-		tolog("Too many attemps to fetch location info, I settle for %s, %s" %
-			(CITY_DEFAULT, COUNTRY_DEFAULT))
+		tolog("Too many attemps to fetch location info, I settle for %s, %s" %(CITY_DEFAULT, COUNTRY_DEFAULT))
 		city = CITY_DEFAULT
 		country = COUNTRY_DEFAULT
-	else:
+	
+	if tide_display:
 		print("=== Tide and weather info for %s (%s) ===" %(city, country))
-	
-	if tide_city == '':
-		tide_city = city
-	
-	tolog("Fetching tide info for %s" %(tide_city))
-	for i in range(nb_iter):
-		tide_hours, tide_coef = get_tide(tide_city)		
-		if tide_coef != '':
-			break
-		sleep(delay)
+		
+		if tide_city == '':
+			tide_city = city
+		
+		tolog("Fetching tide info for %s" %(tide_city))
+		for i in range(nb_iter):
+			tide_hours, tide_coef = get_tide(tide_city)		
+			if tide_coef != '':
+				break
+			sleep(delay)
 
-	if tide_coef == '':
-		tolog("Too many attemps to fetch tide info, I give up!")
-	elif tide_coef == '?':
-		tolog("Cannot fetch tide info for %s" % (tide_city))
+		if tide_coef == '':
+			tolog("Too many attemps to fetch tide info, I give up!")
+		elif tide_coef == '?':
+			tolog("Cannot fetch tide info for %s" % (tide_city))
+		else:
+			print("\nTide info for %s" % (tide_city))
+			print("Tide coefficient: %s" %(tide_coef))
+			if len(tide_hours) == 1:
+				print("Hightide time: %s" %(tide_hours[0]))
+			elif len(tide_hours) == 2:
+				print("First hightide time: %s" %(tide_hours[0]))
+				print("Second hightide time: %s" % (tide_hours[1]))
 	else:
-		print("\nTide info for %s" % (tide_city))
-		print("Tide coefficient: %s" %(tide_coef))
-		if len(tide_hours) == 1:
-			print("Hightide time: %s" %(tide_hours[0]))
-		elif len(tide_hours) == 2:
-			print("First hightide time: %s" %(tide_hours[0]))
-			print("Second hightide time: %s" % (tide_hours[1]))
+		print("=== Weather info for %s (%s) ===" % (city, country))
 
 	if weather_city == '':
 		weather_city = city
