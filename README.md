@@ -4,40 +4,47 @@
 |   Inky Forecast project  |
 +--------------------------+
 
+Written by N.Mercouroff
+19/Feb/19
+
 Repository for inky_forecast project, including python programs for fetching weather and forecast info on Open Weather server, and tide info on horaire-mareee.fr web servers, and for displaying the information on an Inky screen connected to a Raspberry Pi Zero
 
 USAGE:
 -----
 From the shell: 
 
-```python inky_weather_tide.py [-city city [countrycode]] [-h] [-v] [-tidename Name] [-weathername Name] [-tide] [-p]```
+```
+python inky_weather_tide.py [-city city [countrycode]] [-h] [-v] [-tidename Name] [-weathername Name] [-tide] [-p]
+```
 
 with:
 
--h: Display help info
+`-h`: Display help info
 
--v: Verbose mode
+`-v`: Verbose mode
 
--p: Print only mode (no display on Inky)
+`-p`: Print only mode (no display on Inky)
 
--info: Display screen with IP info before weather
+`-info`: Display screen with IP info before weather
 
--tide: Display daily tide info in place of current weather
+`-tide`: Display daily tide info in place of current weather
 
--tidename: Name to be used when fetching tide info (if different from city)
+`-tidename`: Name to be used when fetching tide info (if different from city)
 
--weathername: Name to be used when fetching weather info (if different from city)
+`-weathername`: Name to be used when fetching weather info (if different from city)
 
--city city [countrycode]: Name (and countrycode) to be used for title, tide and weather, unless stated otherwise for weather or tide (defaut is `CITY_DEFAULT, COUNTRY_DEFAULT`)
+`-city city [countrycode]`: Name (and countrycode) to be used for title, tide and weather, unless stated otherwise for weather or tide (defaut is `CITY_DEFAULT, COUNTRY_DEFAULT`)
 
 From another python program: 
 
-```inky_weather_tide.inky_weather_tide(
+```
+inky_weather_tide.inky_weather_tide(
 	city, country, 
 	info_display=False, tide_display=False, 
 	rotate=True, 
 	tidename='', weathername=''
-)```
+)
+```
 
 Where:
 
