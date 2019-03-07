@@ -7,7 +7,7 @@
 Written by N.Mercouroff
 19/Feb/19
 
-Repository for inky_forecast project, including python programs for fetching weather and forecast info on Open Weather server, and tide info on horaire-mareee.fr web servers, and for displaying the information on an Inky screen connected to a Raspberry Pi Zero
+Repository for inky_forecast project, including python programs for fetching weather and forecast info on Open Weather server, and tide info on horaire-maree.fr web servers, and for displaying the information on an Inky screen connected to a Raspberry Pi Zero
 
 USAGE:
 -----
@@ -71,7 +71,7 @@ Requires in current directory a subdirectory /resources with icon PNG files:
 - `icon-rain.png`: raining
 - `icon-snow.png`: snowing
 - `icon-storm.png`: thunderstorm
-- `icon-sun.png$ : sunny
+- `icon-sun.png`: sunny
 - `icon-clear_nite.png`: clear night
 - `icon-wind.png`: windy
 - `icon-myst.png`: Fog
