@@ -7,9 +7,13 @@
 Written by N.Mercouroff
 21/July/20
 
+<<<<<<< HEAD
 Repository for magicmirror project, including python programs for fetching weather and forecast info on Open Weather server, and tide info on horaire-mareee.fr web servers, and for displaying the information on an wHAT screen connected to a Raspberry Pi Zero.
 
 More info: https://raspicolas.wordpress.com/2019/09/29/pi-based-info-center-for-the-family-kitchen/
+=======
+Repository for inky_forecast project, including python programs for fetching weather and forecast info on Open Weather server, and tide info on horaire-maree.fr web servers, and for displaying the information on an Inky screen connected to a Raspberry Pi Zero
+>>>>>>> master
 
 USAGE:
 -----
@@ -60,7 +64,11 @@ Requires in current directory a subdirectory /resources with icon PNG files:
 - `icon-rain.png`: raining
 - `icon-snow.png`: snowing
 - `icon-storm.png`: thunderstorm
+<<<<<<< HEAD
 - `icon-sun.png` : sunny
+=======
+- `icon-sun.png`: sunny
+>>>>>>> master
 - `icon-clear_nite.png`: clear night
 - `icon-wind.png`: windy
 - `icon-myst.png`: Fog
