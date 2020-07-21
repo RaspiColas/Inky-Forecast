@@ -1,44 +1,39 @@
-# Inky-Forecast
+# Magic Mirror
 
 +--------------------------+
-|   Inky Forecast project  |
+|   Magic Mirror project   |
 +--------------------------+
 
 Written by N.Mercouroff
-19/Feb/19
+21/July/20
 
-Repository for inky_forecast project, including python programs for fetching weather and forecast info on Open Weather server, and tide info on horaire-mareee.fr web servers, and for displaying the information on an Inky screen connected to a Raspberry Pi Zero
+Repository for magicmirror project, including python programs for fetching weather and forecast info on Open Weather server, and tide info on horaire-mareee.fr web servers, and for displaying the information on an wHAT screen connected to a Raspberry Pi Zero.
+
+More info: https://raspicolas.wordpress.com/2019/09/29/pi-based-info-center-for-the-family-kitchen/
 
 USAGE:
 -----
 From the shell: 
 
 ```
-python inky_weather_tide.py [-city city [countrycode]] [-h] [-v] [-tidename Name] [-weathername Name] [-tide] [-p]
+python magicmirror.py [-city city [countrycode]] [-h] [-v] [-tidename Name] [-weathername Name] [-tide] [-p]
 ```
 
 with:
 
 `-h`: Display help info
-
 `-v`: Verbose mode
-
 `-p`: Print only mode (no display on Inky)
-
 `-info`: Display screen with IP info before weather
-
 `-tide`: Display daily tide info in place of current weather
-
 `-tidename`: Name to be used when fetching tide info (if different from city)
-
 `-weathername`: Name to be used when fetching weather info (if different from city)
-
-`-city city [countrycode]`: Name (and countrycode) to be used for title, tide and weather, unless stated otherwise for weather or tide (defaut is `CITY_DEFAULT, COUNTRY_DEFAULT`)
+`-city city [countrycode]`: Name (and countrycode) to be used for title, tide and weather, unless stated otherwise for weather or tide (defaut is set in config file)
 
 From another python program: 
 
 ```
-inky_weather_tide.inky_weather_tide(
+magicmirror.magicmirror_main(
 	city, country, 
 	info_display=False, tide_display=False, 
 	rotate=True, 
@@ -48,18 +43,12 @@ inky_weather_tide.inky_weather_tide(
 
 Where:
 
-- `city` : name of the city where forcast shall be displayed (default is either local weather, as determined by IP, or `CITY_DEFAULT`)
-
+- `city` : name of the city where forcast shall be displayed (default is either local weather, as determined by IP, or by config file`)
 - `country` : code of the country (default is `COUNTRY_DEFAULT`)
-
 - `info_display` : display IP info before the weather info
-
 - `tide_display` : display tide and forecast info instead of current weather and forecat info
-
 - `rotate` : rotate 180° the display
-
 - `tidename`: Name to be used when fetching tide info (if different from city)
-
 - `weathername`: Name to be used when fetching weather info (if different from city)
 
 
@@ -71,10 +60,49 @@ Requires in current directory a subdirectory /resources with icon PNG files:
 - `icon-rain.png`: raining
 - `icon-snow.png`: snowing
 - `icon-storm.png`: thunderstorm
-- `icon-sun.png$ : sunny
+- `icon-sun.png` : sunny
 - `icon-clear_nite.png`: clear night
 - `icon-wind.png`: windy
 - `icon-myst.png`: Fog
+- `icon-hitide.png`: Icon for high tide
+- `icon-surise.png`: Icon for the sun rise
+- `icon-sunset.png`: Icon for the sun set
+
+Requires the following standard modules:
+- `time, sys, datetime, os, configparser`
+
+Requires the following sub-programs and files:
+- `panic.py` : to prevent re-entering of the code
+- `mm_data` : to fetch weather, tide and calendar information 
+- `mm_display` : to display information on the inky HAT / wHAT
+- `config_magicmirror.conf` : configuration data
+- `token.pickle` : to store the user's access and refresh tokens for Google Calendar (regenerated)
+
+Installation of the libs:
+	`curl https://get.pimoroni.com/inky | bash`
+	`pip install ConfigParser`
+
+`config_magicmirror.conf` format:
+
+```
+[LOCATION]
+cityDefault = ...
+countryDefault = ...
+
+[GOOGLEID]
+clientID = ...
+client_secret = ...
+
+[OPENWEATHER]
+openWeatherID = ...
+
+[FLAGS]
+tideDisplay = True
+rotate = True
+```
+
+openWeatherID to be filled with ID fetched from https://openweathermap.org
+Note: clientID and client_secret are not used, only token.pickle is used (see https://developers.google.com/calendar/quickstart/python for more info)
 
 
 SIDE EFFECTS:
